@@ -1,12 +1,10 @@
 package qa.guru.country.controller;
 
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import qa.guru.country.model.Country;
 import qa.guru.country.service.CountryService;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 

@@ -3,6 +3,9 @@ package qa.guru.country.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import qa.guru.country.data.CountryEntity;
+import qa.guru.country.domain.graphql.CountryGql;
+import qa.guru.country.domain.graphql.CountryInputGql;
+import qa.guru.country.exception.CountryNotFoundException;
 import qa.guru.country.model.Country;
 import qa.guru.country.data.CountryRepository;
 
@@ -48,5 +51,42 @@ public class CountryService {
 
         countryRepository.save(countryEntity);
         return Country.fromEntity(countryEntity);
+    }
+
+    public CountryGql addCountryGql(CountryInputGql input) {
+        CountryEntity countryEntity = CountryEntity.builder()
+                .countryCode(input.countryCode())
+                .countryName(input.countryName())
+                .build();
+
+        countryRepository.save(countryEntity);
+        return CountryGql.fromEntity(countryEntity);
+    }
+
+    public CountryGql updateCountryGql(UUID uuid, CountryInputGql input) {
+        CountryEntity countryEntity = countryRepository.findById(uuid)
+                .orElseThrow(() -> new IllegalArgumentException("Country not found"));
+
+        countryEntity = CountryEntity.builder()
+                .id(uuid)
+                .countryCode(input.countryCode())
+                .countryName(input.countryName())
+                .build();
+
+        countryRepository.save(countryEntity);
+        return CountryGql.fromEntity(countryEntity);
+    }
+
+    public List<CountryGql> getAllCountriesGql() {
+        return countryRepository.findAll()
+                .stream()
+                .map(CountryGql::fromEntity)
+                .toList();
+    }
+
+    public CountryGql getCountryByIdGql(UUID id) {
+        CountryEntity countryEntity = countryRepository.findById(id).orElseThrow(() ->
+                new CountryNotFoundException(String.format("Country not found with id: %s", id)));
+        return CountryGql.fromEntity(countryEntity);
     }
 }
