@@ -37,16 +37,16 @@ public class CountryService {
     }
 
     public Country updateCountry(UUID uuid, Country country) {
-        countryRepository.findById(uuid)
+        CountryEntity countryEntity = countryRepository.findById(uuid)
                 .orElseThrow(() -> new IllegalArgumentException("Country not found"));
 
-        CountryEntity byCountryName = CountryEntity.builder()
+        countryEntity = CountryEntity.builder()
                 .id(uuid)
                 .countryCode(country.countryCode())
                 .countryName(country.countryName())
                 .build();
 
-        countryRepository.save(byCountryName);
-        return Country.fromEntity(byCountryName);
+        countryRepository.save(countryEntity);
+        return Country.fromEntity(countryEntity);
     }
 }

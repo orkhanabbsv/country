@@ -15,10 +15,6 @@ public class DateSerializer extends JsonSerializer<Date>{
         this.format = format;
     }
 
-    public DateSerializer() {
-        this.format = null;
-    }
-
     @Override
     public void serialize(
             final Date value, final JsonGenerator jgen, final SerializerProvider provider
